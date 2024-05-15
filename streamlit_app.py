@@ -58,7 +58,7 @@ def tampilkan_isi_folder(path):
     
     st.write("### File")
     for file in files:
-        col1, col2, col3 = st.columns([2, 1, 1])
+        col1, col2, col3, col4, col5 = st.columns([2, 1, 1, 1, 1])
         with col1:
             st.write(f"📄 {file.name}")
         with col2:
@@ -71,6 +71,21 @@ def tampilkan_isi_folder(path):
         with col3:
             if st.button(f"Hapus", key=f"btn_delete_{file.name}"):
                 hapus_file(file)
+        with col4:
+            with open(file, "rb") as f:
+                st.download_button(
+                    label="Download",
+                    data=f,
+                    file_name=file.name,
+                    mime="application/octet-stream",
+                    key=f"download_{file.name}"
+                )
+        with col5:
+            if file.suffix in [".txt", ".md", ".py", ".csv"]:
+                with open(file, "r") as f:
+                    content = f.read()
+                    if st.button(f"Buka", key=f"open_{file.name}"):
+                        st.code(content, language=file.suffix.lstrip("."))
 
 # Aplikasi Streamlit
 st.title("Simple Drive with Streamlit")
