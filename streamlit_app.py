@@ -1,6 +1,7 @@
 import streamlit as st
 import os
 from pathlib import Path
+import shutil
 
 # Konfigurasi direktori utama
 BASE_DIR = Path("uploads")
@@ -41,6 +42,14 @@ def hapus_file(file_path):
     except Exception as e:
         st.error(f"Gagal menghapus file: {e}")
 
+# Fungsi untuk menghapus folder
+def hapus_folder(folder_path):
+    try:
+        shutil.rmtree(folder_path)
+        st.success(f"Folder '{folder_path.name}' berhasil dihapus beserta isinya.")
+    except Exception as e:
+        st.error(f"Gagal menghapus folder: {e}")
+
 # Fungsi untuk menampilkan isi folder
 def tampilkan_isi_folder(path):
     items = list(path.iterdir())
@@ -53,9 +62,14 @@ def tampilkan_isi_folder(path):
     
     st.write("### Folder")
     for folder in folders:
-        if st.button(f"📁 {folder.name}", key=f"folder_{folder.name}"):
-            st.experimental_set_query_params(path=str(folder.relative_to(BASE_DIR)))
-    
+        col1, col2 = st.columns([4, 1])
+        with col1:
+            if st.button(f"📁 {folder.name}", key=f"folder_{folder.name}"):
+                st.experimental_set_query_params(path=str(folder.relative_to(BASE_DIR)))
+        with col2:
+            if st.button(f"Hapus", key=f"btn_delete_folder_{folder.name}"):
+                hapus_folder(folder)
+
     st.write("### File")
     for file in files:
         col1, col2, col3, col4, col5 = st.columns([2, 1, 1, 1, 1])
