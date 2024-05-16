@@ -6,7 +6,7 @@ import shutil
 st.set_page_config(
     page_title="In-Cloud"
 )
-# Konfigurasi direktori utama
+## Konfigurasi direktori utama
 BASE_DIR = Path("uploads")
 if not BASE_DIR.exists():
     BASE_DIR.mkdir(parents=True, exist_ok=True)
