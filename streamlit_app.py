@@ -132,7 +132,7 @@ def tampilkan_isi_folder(path):
                         st.code(content, language=file.suffix.lstrip("."))
 
 # Aplikasi Streamlit
-st.title("LDK - YARSI Storage")
+st.title("LDK YARSI Storage")
 
 # Membaca query parameter untuk navigasi folder
 query_params = st.experimental_get_query_params()
