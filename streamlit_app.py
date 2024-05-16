@@ -90,14 +90,17 @@ def tampilkan_isi_folder(path):
             if st.button(f"📁 {folder.name}", key=f"folder_{folder.name}"):
                 st.experimental_set_query_params(path=str(folder.relative_to(BASE_DIR)))
         with col2:
-            with st.expander("⚙️"):
-                new_name = st.text_input(f"Ubah nama: {folder.name}", key=f"rename_folder_{folder.name}")
-                if st.button(f"Ubah Nama", key=f"btn_rename_folder_{folder.name}"):
+            menu_options = ["⚙️", "Rename", "Delete"]
+            action = st.selectbox("", menu_options, key=f"menu_folder_{folder.name}", label_visibility="collapsed")
+            if action == "Rename":
+                new_name = st.text_input(f"Ubah nama folder '{folder.name}'", key=f"rename_folder_{folder.name}_input")
+                if st.button(f"Ubah Nama", key=f"btn_rename_folder_{folder.name}_confirm"):
                     if new_name:
                         ubah_nama_folder(folder, new_name)
                     else:
                         st.error("Nama folder baru tidak boleh kosong.")
-                if st.button(f"Hapus", key=f"btn_delete_folder_{folder.name}"):
+            elif action == "Delete":
+                if st.button(f"Hapus Folder", key=f"btn_delete_folder_{folder.name}_confirm"):
                     hapus_folder(folder)
 
     st.write("### File")
@@ -106,15 +109,19 @@ def tampilkan_isi_folder(path):
         with col1:
             st.write(f"📄 {file.name}")
         with col2:
-            with st.expander("⚙️"):
-                new_name = st.text_input(f"Ubah nama: {file.name}", key=f"rename_{file.name}")
-                if st.button(f"Ubah Nama", key=f"btn_rename_{file.name}"):
+            menu_options = ["⚙️", "Rename", "Delete", "Download", "Open"]
+            action = st.selectbox("", menu_options, key=f"menu_file_{file.name}", label_visibility="collapsed")
+            if action == "Rename":
+                new_name = st.text_input(f"Ubah nama file '{file.name}'", key=f"rename_{file.name}_input")
+                if st.button(f"Ubah Nama", key=f"btn_rename_{file.name}_confirm"):
                     if new_name:
                         ubah_nama_file(file, new_name)
                     else:
                         st.error("Nama file baru tidak boleh kosong.")
-                if st.button(f"Hapus", key=f"btn_delete_{file.name}"):
+            elif action == "Delete":
+                if st.button(f"Hapus File", key=f"btn_delete_{file.name}_confirm"):
                     hapus_file(file)
+            elif action == "Download":
                 with open(file, "rb") as f:
                     st.download_button(
                         label="Download",
@@ -123,11 +130,11 @@ def tampilkan_isi_folder(path):
                         mime="application/octet-stream",
                         key=f"download_{file.name}"
                     )
+            elif action == "Open":
                 if file.suffix in [".txt", ".md", ".py", ".csv"]:
                     with open(file, "r") as f:
                         content = f.read()
-                        if st.button(f"Buka", key=f"open_{file.name}"):
-                            st.code(content, language=file.suffix.lstrip("."))
+                        st.code(content, language=file.suffix.lstrip("."))
 
 # Aplikasi Streamlit
 st.title("LDK YARSI Storage")
