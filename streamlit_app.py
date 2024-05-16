@@ -131,7 +131,7 @@ def tampilkan_isi_folder(path):
                         key=f"download_{file.name}"
                     )
             elif action == "Open":
-                if file.suffix in [".txt", ".md", ".py", ".csv"]:
+                if file.suffix in [".txt", ".md", ".py", ".csv", ".jpg", ".mpa4", ".mp3"]:
                     with open(file, "r") as f:
                         content = f.read()
                         st.code(content, language=file.suffix.lstrip("."))
