@@ -64,6 +64,15 @@ def ubah_nama_folder(folder_path, new_name):
     except Exception as e:
         st.error(f"Gagal mengubah nama folder: {e}")
 
+# Fungsi untuk menghitung ukuran total penyimpanan yang terpakai
+def hitung_total_ukuran(path):
+    total_size = 0
+    for dirpath, dirnames, filenames in os.walk(path):
+        for f in filenames:
+            fp = os.path.join(dirpath, f)
+            total_size += os.path.getsize(fp)
+    return total_size
+
 # Fungsi untuk menampilkan isi folder
 def tampilkan_isi_folder(path):
     items = list(path.iterdir())
@@ -129,6 +138,10 @@ st.title("LDK - YARSI Storage")
 query_params = st.experimental_get_query_params()
 current_path_str = query_params.get("path", [""])[0]
 current_path = BASE_DIR / current_path_str
+
+# Menampilkan total ukuran penyimpanan yang terpakai
+total_storage_used = hitung_total_ukuran(BASE_DIR)
+st.write(f"Total penyimpanan yang terpakai: {total_storage_used / (1024 * 1024):.2f} MB")
 
 # Membuat folder baru
 st.header("Buat Folder")
