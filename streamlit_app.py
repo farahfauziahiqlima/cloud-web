@@ -85,51 +85,49 @@ def tampilkan_isi_folder(path):
 
     st.write("### Folder")
     for folder in folders:
-        col1, col2, col3 = st.columns([3, 1, 1])
+        col1, col2 = st.columns([6, 1])
         with col1:
             if st.button(f"📁 {folder.name}", key=f"folder_{folder.name}"):
                 st.experimental_set_query_params(path=str(folder.relative_to(BASE_DIR)))
         with col2:
-            new_name = st.text_input(f"Ubah nama: {folder.name}", key=f"rename_folder_{folder.name}")
-            if st.button(f"Ubah Nama", key=f"btn_rename_folder_{folder.name}"):
-                if new_name:
-                    ubah_nama_folder(folder, new_name)
-                else:
-                    st.error("Nama folder baru tidak boleh kosong.")
-        with col3:
-            if st.button(f"Hapus", key=f"btn_delete_folder_{folder.name}"):
-                hapus_folder(folder)
+            with st.expander("⚙️"):
+                new_name = st.text_input(f"Ubah nama: {folder.name}", key=f"rename_folder_{folder.name}")
+                if st.button(f"Ubah Nama", key=f"btn_rename_folder_{folder.name}"):
+                    if new_name:
+                        ubah_nama_folder(folder, new_name)
+                    else:
+                        st.error("Nama folder baru tidak boleh kosong.")
+                if st.button(f"Hapus", key=f"btn_delete_folder_{folder.name}"):
+                    hapus_folder(folder)
 
     st.write("### File")
     for file in files:
-        col1, col2, col3, col4, col5 = st.columns([2, 1, 1, 1, 1])
+        col1, col2 = st.columns([6, 1])
         with col1:
             st.write(f"📄 {file.name}")
         with col2:
-            new_name = st.text_input(f"Ubah nama: {file.name}", key=f"rename_{file.name}")
-            if st.button(f"Ubah Nama", key=f"btn_rename_{file.name}"):
-                if new_name:
-                    ubah_nama_file(file, new_name)
-                else:
-                    st.error("Nama file baru tidak boleh kosong.")
-        with col3:
-            if st.button(f"Hapus", key=f"btn_delete_{file.name}"):
-                hapus_file(file)
-        with col4:
-            with open(file, "rb") as f:
-                st.download_button(
-                    label="Download",
-                    data=f,
-                    file_name=file.name,
-                    mime="application/octet-stream",
-                    key=f"download_{file.name}"
-                )
-        with col5:
-            if file.suffix in [".txt", ".md", ".py", ".csv"]:
-                with open(file, "r") as f:
-                    content = f.read()
-                    if st.button(f"Buka", key=f"open_{file.name}"):
-                        st.code(content, language=file.suffix.lstrip("."))
+            with st.expander("⚙️"):
+                new_name = st.text_input(f"Ubah nama: {file.name}", key=f"rename_{file.name}")
+                if st.button(f"Ubah Nama", key=f"btn_rename_{file.name}"):
+                    if new_name:
+                        ubah_nama_file(file, new_name)
+                    else:
+                        st.error("Nama file baru tidak boleh kosong.")
+                if st.button(f"Hapus", key=f"btn_delete_{file.name}"):
+                    hapus_file(file)
+                with open(file, "rb") as f:
+                    st.download_button(
+                        label="Download",
+                        data=f,
+                        file_name=file.name,
+                        mime="application/octet-stream",
+                        key=f"download_{file.name}"
+                    )
+                if file.suffix in [".txt", ".md", ".py", ".csv"]:
+                    with open(file, "r") as f:
+                        content = f.read()
+                        if st.button(f"Buka", key=f"open_{file.name}"):
+                            st.code(content, language=file.suffix.lstrip("."))
 
 # Aplikasi Streamlit
 st.title("LDK YARSI Storage")
