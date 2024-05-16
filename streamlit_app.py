@@ -135,6 +135,8 @@ def tampilkan_isi_folder(path):
                     with open(file, "r") as f:
                         content = f.read()
                         st.code(content, language=file.suffix.lstrip("."))
+                else:
+                    st.warning("File type not supported for direct viewing.")
 
 # Aplikasi Streamlit
 st.title("LDK YARSI Storage")
