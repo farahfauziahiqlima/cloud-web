@@ -109,7 +109,7 @@ def tampilkan_isi_folder(path):
         with col1:
             st.write(f"📄 {file.name}")
         with col2:
-            menu_options = ["⚙️", "Rename", "Delete", "Download", "Open"]
+            menu_options = [":", "Rename", "Delete", "Download", "Open"]
             action = st.selectbox("", menu_options, key=f"menu_file_{file.name}", label_visibility="collapsed")
             if action == "Rename":
                 new_name = st.text_input(f"Ubah nama file '{file.name}'", key=f"rename_{file.name}_input")
