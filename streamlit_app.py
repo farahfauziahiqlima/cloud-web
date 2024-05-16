@@ -3,11 +3,6 @@ import os
 from pathlib import Path
 import shutil
 
-##st.set_page_config(
-  ##  page_title="InClouds",
-   ### page_icon="⛅",
-
-##)
 
 # Konfigurasi direktori utama
 BASE_DIR = Path("uploads")
