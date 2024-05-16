@@ -50,23 +50,39 @@ def hapus_folder(folder_path):
     except Exception as e:
         st.error(f"Gagal menghapus folder: {e}")
 
+# Fungsi untuk mengubah nama folder
+def ubah_nama_folder(folder_path, new_name):
+    try:
+        new_folder_path = folder_path.parent / new_name
+        folder_path.rename(new_folder_path)
+        st.success(f"Folder '{folder_path.name}' berhasil diubah namanya menjadi '{new_name}'.")
+    except Exception as e:
+        st.error(f"Gagal mengubah nama folder: {e}")
+
 # Fungsi untuk menampilkan isi folder
 def tampilkan_isi_folder(path):
     items = list(path.iterdir())
     files = [item for item in items if item.is_file()]
     folders = [item for item in items if item.is_dir()]
-    
+
     st.write(f"Isi folder: {path.relative_to(BASE_DIR)}")
     if path != BASE_DIR and st.button("Kembali ke folder utama"):
         st.experimental_set_query_params(path="")
-    
+
     st.write("### Folder")
     for folder in folders:
-        col1, col2 = st.columns([4, 1])
+        col1, col2, col3 = st.columns([3, 1, 1])
         with col1:
             if st.button(f"📁 {folder.name}", key=f"folder_{folder.name}"):
                 st.experimental_set_query_params(path=str(folder.relative_to(BASE_DIR)))
         with col2:
+            new_name = st.text_input(f"Ubah nama: {folder.name}", key=f"rename_folder_{folder.name}")
+            if st.button(f"Ubah Nama", key=f"btn_rename_folder_{folder.name}"):
+                if new_name:
+                    ubah_nama_folder(folder, new_name)
+                else:
+                    st.error("Nama folder baru tidak boleh kosong.")
+        with col3:
             if st.button(f"Hapus", key=f"btn_delete_folder_{folder.name}"):
                 hapus_folder(folder)
 
