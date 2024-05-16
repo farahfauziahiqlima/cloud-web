@@ -131,10 +131,17 @@ def tampilkan_isi_folder(path):
                         key=f"download_{file.name}"
                     )
             elif action == "Open":
-                if file.suffix in [".txt", ".md", ".py", ".csv", ".jpg"]:
+                if file.suffix in [".txt", ".md", ".py", ".csv"]:
                     with open(file, "r") as f:
                         content = f.read()
                         st.code(content, language=file.suffix.lstrip("."))
+                elif file.suffix in [".jpg", ".jpeg", ".png", ".gif"]:
+                    st.image(str(file))
+                elif file.suffix in [".pdf"]:
+                    with open(file, "rb") as f:
+                        base64_pdf = base64.b64encode(f.read()).decode('utf-8')
+                        pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="700" height="1000" type="application/pdf"></iframe>'
+                        st.markdown(pdf_display, unsafe_allow_html=True)
                 else:
                     st.warning("File type not supported for direct viewing.")
 
