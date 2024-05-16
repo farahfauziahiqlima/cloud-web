@@ -5,7 +5,7 @@ import shutil
 
 st.set_page_config(
     page_title="InClouds",
-    page_icons="⛅"
+    page_icons="⛅",
 
 )
 
