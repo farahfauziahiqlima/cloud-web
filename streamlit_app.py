@@ -3,9 +3,11 @@ import os
 from pathlib import Path
 import shutil
 
+# Set Streamlit page configuration
 st.set_page_config(
     page_title="In-Cloud"
 )
+
 ## Konfigurasi direktori utama
 BASE_DIR = Path("uploads")
 if not BASE_DIR.exists():
@@ -141,11 +143,11 @@ if st.button("Buat Folder"):
 # Mengunggah file baru
 st.header("Unggah File")
 uploaded_file = st.file_uploader("Pilih File")
-if st.button("Unggah File"):
-    if uploaded_file:
+if uploaded_file and st.button("Unggah File"):
+    if uploaded_file.size <= 1 * 1024 * 1024 * 1024:  # Check if file size is less than or equal to 1GB
         tambah_dokumen(current_path_str, uploaded_file)
     else:
-        st.error("File harus dipilih")
+        st.error("Ukuran file tidak boleh lebih dari 1GB")
 
 # Tampilkan isi folder saat ini
 tampilkan_isi_folder(current_path)
