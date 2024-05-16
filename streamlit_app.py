@@ -3,7 +3,6 @@ import os
 from pathlib import Path
 import shutil
 
-
 # Konfigurasi direktori utama
 BASE_DIR = Path("uploads")
 if not BASE_DIR.exists():
@@ -119,7 +118,7 @@ def tampilkan_isi_folder(path):
                         st.code(content, language=file.suffix.lstrip("."))
 
 # Aplikasi Streamlit
-st.title("Penyimpanan LDK Kahfi - YARSI")
+st.title("Simple Drive with Streamlit")
 
 # Membaca query parameter untuk navigasi folder
 query_params = st.experimental_get_query_params()
