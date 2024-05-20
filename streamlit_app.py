@@ -5,7 +5,7 @@ import shutil
 from streamlit_option_menu import option_menu
 
 with st.sidebar:
-    selected = option_menu("Main Menu", ["Beranda", 'Settings'], 
+    selected = option_menu("Main - Menu", ["Beranda", 'Settings'], 
         icons=['house', 'gear'], menu_icon="cast", default_index=1)
     selected
 
