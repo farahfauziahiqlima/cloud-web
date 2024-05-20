@@ -2,6 +2,12 @@ import streamlit as st
 import os
 from pathlib import Path
 import shutil
+from streamlit_option_menu import option_menu
+
+with st.sidebar:
+    selected = option_menu("Main Menu", ["Beranda", 'Settings'], 
+        icons=['house', 'gear'], menu_icon="cast", default_index=1)
+    selected
 
 # Set Streamlit page configuration
 st.set_page_config(
@@ -10,11 +16,8 @@ st.set_page_config(
 
 ## Konfigurasi direktori utama
 BASE_DIR = Path("uploads")
-TRASH_DIR = BASE_DIR / "trash"
 if not BASE_DIR.exists():
     BASE_DIR.mkdir(parents=True, exist_ok=True)
-if not TRASH_DIR.exists():
-    TRASH_DIR.mkdir(parents=True, exist_ok=True)
 
 # Membuat folder jika belum ada
 def buat_folder(path):
@@ -42,21 +45,19 @@ def ubah_nama_file(file_path, new_name):
     except Exception as e:
         st.error(f"Gagal mengubah nama file: {e}")
 
-# Fungsi untuk menghapus file (memindahkan ke tempat sampah)
+# Fungsi untuk menghapus file
 def hapus_file(file_path):
     try:
-        trash_path = TRASH_DIR / file_path.name
-        shutil.move(str(file_path), str(trash_path))
-        st.success(f"File '{file_path.name}' berhasil dipindahkan ke tempat sampah.")
+        file_path.unlink()
+        st.success(f"File '{file_path.name}' berhasil dihapus.")
     except Exception as e:
         st.error(f"Gagal menghapus file: {e}")
 
-# Fungsi untuk menghapus folder (memindahkan ke tempat sampah)
+# Fungsi untuk menghapus folder
 def hapus_folder(folder_path):
     try:
-        trash_path = TRASH_DIR / folder_path.name
-        shutil.move(str(folder_path), str(trash_path))
-        st.success(f"Folder '{folder_path.name}' berhasil dipindahkan ke tempat sampah beserta isinya.")
+        shutil.rmtree(folder_path)
+        st.success(f"Folder '{folder_path.name}' berhasil dihapus beserta isinya.")
     except Exception as e:
         st.error(f"Gagal menghapus folder: {e}")
 
@@ -95,7 +96,7 @@ def tampilkan_isi_folder(path):
             if st.button(f"📁 {folder.name}", key=f"folder_{folder.name}"):
                 st.experimental_set_query_params(path=str(folder.relative_to(BASE_DIR)))
         with col2:
-            menu_options = ["⚙️", "Rename", "Delete"]
+            menu_options = ["⚙", "Rename", "Delete"]
             action = st.selectbox("", menu_options, key=f"menu_folder_{folder.name}", label_visibility="collapsed")
             if action == "Rename":
                 new_name = st.text_input(f"Ubah nama folder '{folder.name}'", key=f"rename_folder_{folder.name}_input")
@@ -114,7 +115,7 @@ def tampilkan_isi_folder(path):
         with col1:
             st.write(f"📄 {file.name}")
         with col2:
-            menu_options = ["⚙️", "Rename", "Delete", "Download", "Open"]
+            menu_options = ["⚙", "Rename", "Delete", "Download", "Open"]
             action = st.selectbox("", menu_options, key=f"menu_file_{file.name}", label_visibility="collapsed")
             if action == "Rename":
                 new_name = st.text_input(f"Ubah nama file '{file.name}'", key=f"rename_{file.name}_input")
@@ -183,15 +184,3 @@ if uploaded_file and st.button("Unggah File"):
 
 # Tampilkan isi folder saat ini
 tampilkan_isi_folder(current_path)
-
-# Tampilkan isi tempat sampah
-st.header("Tempat Sampah")
-if st.button("Kosongkan Tempat Sampah"):
-    for item in TRASH_DIR.iterdir():
-        if item.is_file():
-            item.unlink()
-        elif item.is_dir():
-            shutil.rmtree(item)
-    st.success("Tempat sampah berhasil dikosongkan.")
-
-tampilkan_isi_folder(TRASH_DIR)
