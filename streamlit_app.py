@@ -10,11 +10,8 @@ st.set_page_config(
 
 ## Konfigurasi direktori utama
 BASE_DIR = Path("uploads")
-TRASH_DIR = BASE_DIR / "trash"
 if not BASE_DIR.exists():
     BASE_DIR.mkdir(parents=True, exist_ok=True)
-if not TRASH_DIR.exists():
-    TRASH_DIR.mkdir(parents=True, exist_ok=True)
 
 # Membuat folder jika belum ada
 def buat_folder(path):
@@ -42,21 +39,19 @@ def ubah_nama_file(file_path, new_name):
     except Exception as e:
         st.error(f"Gagal mengubah nama file: {e}")
 
-# Fungsi untuk menghapus file (memindahkan ke tempat sampah)
+# Fungsi untuk menghapus file
 def hapus_file(file_path):
     try:
-        trash_path = TRASH_DIR / file_path.name
-        shutil.move(str(file_path), str(trash_path))
-        st.success(f"File '{file_path.name}' berhasil dipindahkan ke tempat sampah.")
+        file_path.unlink()
+        st.success(f"File '{file_path.name}' berhasil dihapus.")
     except Exception as e:
         st.error(f"Gagal menghapus file: {e}")
 
-# Fungsi untuk menghapus folder (memindahkan ke tempat sampah)
+# Fungsi untuk menghapus folder
 def hapus_folder(folder_path):
     try:
-        trash_path = TRASH_DIR / folder_path.name
-        shutil.move(str(folder_path), str(trash_path))
-        st.success(f"Folder '{folder_path.name}' berhasil dipindahkan ke tempat sampah beserta isinya.")
+        shutil.rmtree(folder_path)
+        st.success(f"Folder '{folder_path.name}' berhasil dihapus beserta isinya.")
     except Exception as e:
         st.error(f"Gagal menghapus folder: {e}")
 
@@ -183,15 +178,3 @@ if uploaded_file and st.button("Unggah File"):
 
 # Tampilkan isi folder saat ini
 tampilkan_isi_folder(current_path)
-
-# Tampilkan isi tempat sampah
-st.header("Tempat Sampah")
-if st.button("Kosongkan Tempat Sampah"):
-    for item in TRASH_DIR.iterdir():
-        if item.is_file():
-            item.unlink()
-        elif item.is_dir():
-            shutil.rmtree(item)
-    st.success("Tempat sampah berhasil dikosongkan.")
-
-tampilkan_isi_folder(TRASH_DIR)
