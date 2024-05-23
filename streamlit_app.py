@@ -2,16 +2,15 @@ import streamlit as st
 import os
 from pathlib import Path
 import shutil
-from streamlit_opion_menu import option_menu
 
 # Set Streamlit page configuration
 st.set_page_config(
     page_title="InClouds"
 )
-with st.sidebar:
-    app = option_menu(
-        options=['Beranda', 'Tempat Sampah', 'Pengaturan', 'Tentang']
-    )
+#with st.sidebar:
+ #   app = option_menu(
+  #      options=['Beranda', 'Tempat Sampah', 'Pengaturan', 'Tentang']
+   # )
 
 ## Konfigurasi direktori utama
 BASE_DIR = Path("uploads")
