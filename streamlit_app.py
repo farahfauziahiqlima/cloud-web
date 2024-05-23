@@ -10,9 +10,9 @@ st.set_page_config(
 )
 
 with st.sidebar:
-    selected=option_menu(
-        menu_title=['Menu'],
-        options=['Home', 'About Us'],
+    selected = option_menu(
+        menu_title="Menu",
+        options=["Home", "About Us"],
         default_index=0,
     )
 
@@ -21,7 +21,7 @@ BASE_DIR = Path("uploads")
 if not BASE_DIR.exists():
     BASE_DIR.mkdir(parents=True, exist_ok=True)
 
-# Membuat folder jika belum ada
+# Fungsi untuk membuat folder jika belum ada
 def buat_folder(path):
     if not path.exists():
         path.mkdir(parents=True, exist_ok=True)
@@ -98,7 +98,7 @@ def tampilkan_isi_folder(path):
             if st.button(f"📁 {folder.name}", key=f"folder_{folder.name}"):
                 st.experimental_set_query_params(path=str(folder.relative_to(BASE_DIR)))
         with col2:
-            menu_options = ["⚙", "Rename", "Delete"]
+            menu_options = ["⚙️", "Rename", "Delete"]
             action = st.selectbox("", menu_options, key=f"menu_folder_{folder.name}", label_visibility="collapsed")
             if action == "Rename":
                 new_name = st.text_input(f"Ubah nama folder '{folder.name}'", key=f"rename_folder_{folder.name}_input")
@@ -117,7 +117,7 @@ def tampilkan_isi_folder(path):
         with col1:
             st.write(f"📄 {file.name}")
         with col2:
-            menu_options = ["⚙", "Rename", "Delete", "Download", "Open"]
+            menu_options = ["⚙️", "Rename", "Delete", "Download", "Open"]
             action = st.selectbox("", menu_options, key=f"menu_file_{file.name}", label_visibility="collapsed")
             if action == "Rename":
                 new_name = st.text_input(f"Ubah nama file '{file.name}'", key=f"rename_{file.name}_input")
