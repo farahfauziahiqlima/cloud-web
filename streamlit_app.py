@@ -10,8 +10,8 @@ st.set_page_config(
 
 # Define sidebar menu
 st.sidebar.title("Menu")
-menu = st.sidebar.radio(
-    ["Beranda", "Pengaturan", "Tentang Kami"]
+menu = st.sidebar(
+    "Beranda", "Pengaturan", "Tentang Kami"
 )
 
 #with st.sidebar:
