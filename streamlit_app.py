@@ -7,6 +7,10 @@ import shutil
 st.set_page_config(
     page_title="InClouds"
 )
+with st.sidebar:
+    app = option_menu(
+        options=['Beranda', 'Tempat Sampah', 'Pengaturan', 'Tentang']
+    )
 
 ## Konfigurasi direktori utama
 BASE_DIR = Path("uploads")
