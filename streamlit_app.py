@@ -2,23 +2,19 @@ import streamlit as st
 import os
 from pathlib import Path
 import shutil
+from streamlit_option_menu import option_menu
 
 # Set Streamlit page configuration
 st.set_page_config(
     page_title="InClouds"
 )
 
-# Define sidebar menu
-st.sidebar.title("Menu")
-menu = st.sidebar.radio(
-    "Navigasi",
-    ["Beranda", "Pengaturan", "Tentang Kami"]
-)
-
-#with st.sidebar:
- #   app = option_menu(
-  #      options=['Beranda', 'Tempat Sampah', 'Pengaturan', 'Tentang']
-   # )
+with st.sidebar:
+    selected=option_menu(
+        menu_title=['Menu'],
+        options=['Home', 'About Us'],
+        default_index=0,
+    )
 
 ## Konfigurasi direktori utama
 BASE_DIR = Path("uploads")
