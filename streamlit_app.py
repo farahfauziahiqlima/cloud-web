@@ -11,7 +11,7 @@ with st.sidebar:
 
 # Set Streamlit page configuration
 st.set_page_config(
-    page_title="InClouds"
+    page_title="In-Clouds"
 )
 
 ## Konfigurasi direktori utama
