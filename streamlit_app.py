@@ -9,12 +9,12 @@ st.set_page_config(
     page_title="InClouds"
 )
 
-with st.sidebar:
-    selected = option_menu(
-        menu_title="Menu",
-        options=["Home", "About Us"],
-        default_index=0,
-    )
+#with st.sidebar:
+   # selected = option_menu(
+    #    menu_title="Menu",
+   #     options=["Home", "About Us"],
+  #      default_index=0,
+ #   )
 
 ## Konfigurasi direktori utama
 BASE_DIR = Path("uploads")
