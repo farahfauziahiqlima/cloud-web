@@ -169,7 +169,7 @@ if st.button("Buat Folder"):
 
 # Mengunggah file baru
 st.header("Unggah File")
-uploaded_file = st.file_uploader("Pilih File (Limit 1GB)")
+uploaded_file = st.file_uploader("Pilih File")
 if uploaded_file and st.button("Unggah File"):
     if uploaded_file.size <= 1 * 1024 * 1024 * 1024:  # Check if file size is less than or equal to 1GB
         tambah_dokumen(current_path_str, uploaded_file)
