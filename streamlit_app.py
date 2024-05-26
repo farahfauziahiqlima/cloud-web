@@ -5,7 +5,7 @@ import shutil
 
 # Set Streamlit page configuration
 st.set_page_config(
-    page_title="InClouds"
+    page_title="In-Cloud"
 )
 
 ## Konfigurasi direktori utama
