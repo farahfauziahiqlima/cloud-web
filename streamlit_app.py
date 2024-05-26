@@ -2,26 +2,18 @@ import streamlit as st
 import os
 from pathlib import Path
 import shutil
-#from streamlit_option_menu import option_menu
 
 # Set Streamlit page configuration
 st.set_page_config(
     page_title="InClouds"
 )
 
-#with st.sidebar:
-   # selected = option_menu(
-    #    menu_title="Menu",
-   #     options=["Home", "About Us"],
-  #      default_index=0,
- #   )
-
 ## Konfigurasi direktori utama
 BASE_DIR = Path("uploads")
 if not BASE_DIR.exists():
     BASE_DIR.mkdir(parents=True, exist_ok=True)
 
-# Fungsi untuk membuat folder jika belum ada
+# Membuat folder jika belum ada
 def buat_folder(path):
     if not path.exists():
         path.mkdir(parents=True, exist_ok=True)
