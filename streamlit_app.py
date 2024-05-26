@@ -2,7 +2,7 @@ import streamlit as st
 import os
 from pathlib import Path
 import shutil
-from streamlit_option_menu import option_menu
+#from streamlit_option_menu import option_menu
 
 # Set Streamlit page configuration
 st.set_page_config(
