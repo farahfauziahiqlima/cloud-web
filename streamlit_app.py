@@ -5,20 +5,27 @@ import shutil
 
 # Set Streamlit page configuration
 st.set_page_config(
-    page_title="In-Clouds"
+    page_title="InClouds"
 )
 
-## Konfigurasi direktori utama
+# Define sidebar menu
+st.sidebar.title("Menu")
+menu = st.sidebar.radio(
+    "Navigasi",
+    ["Beranda", "Pengaturan", "Tentang Kami"]
+)
+
+# Configuration for main directory
 BASE_DIR = Path("uploads")
 if not BASE_DIR.exists():
     BASE_DIR.mkdir(parents=True, exist_ok=True)
 
-# Membuat folder jika belum ada
+# Function to create a folder if it doesn't exist
 def buat_folder(path):
     if not path.exists():
         path.mkdir(parents=True, exist_ok=True)
 
-# Fungsi untuk menambahkan dokumen ke dalam folder
+# Function to add a document to a folder
 def tambah_dokumen(folder, file):
     try:
         folder_path = BASE_DIR / folder
@@ -30,7 +37,7 @@ def tambah_dokumen(folder, file):
     except Exception as e:
         st.error(f"Gagal menambahkan dokumen: {e}")
 
-# Fungsi untuk mengubah nama file
+# Function to rename a file
 def ubah_nama_file(file_path, new_name):
     try:
         new_file_path = file_path.parent / new_name
@@ -39,7 +46,7 @@ def ubah_nama_file(file_path, new_name):
     except Exception as e:
         st.error(f"Gagal mengubah nama file: {e}")
 
-# Fungsi untuk menghapus file
+# Function to delete a file
 def hapus_file(file_path):
     try:
         file_path.unlink()
@@ -47,7 +54,7 @@ def hapus_file(file_path):
     except Exception as e:
         st.error(f"Gagal menghapus file: {e}")
 
-# Fungsi untuk menghapus folder
+# Function to delete a folder
 def hapus_folder(folder_path):
     try:
         shutil.rmtree(folder_path)
@@ -55,7 +62,7 @@ def hapus_folder(folder_path):
     except Exception as e:
         st.error(f"Gagal menghapus folder: {e}")
 
-# Fungsi untuk mengubah nama folder
+# Function to rename a folder
 def ubah_nama_folder(folder_path, new_name):
     try:
         new_folder_path = folder_path.parent / new_name
@@ -64,7 +71,7 @@ def ubah_nama_folder(folder_path, new_name):
     except Exception as e:
         st.error(f"Gagal mengubah nama folder: {e}")
 
-# Fungsi untuk menghitung ukuran total penyimpanan yang terpakai
+# Function to calculate total storage used
 def hitung_total_ukuran(path):
     total_size = 0
     for dirpath, dirnames, filenames in os.walk(path):
@@ -73,7 +80,7 @@ def hitung_total_ukuran(path):
             total_size += os.path.getsize(fp)
     return total_size
 
-# Fungsi untuk menampilkan isi folder
+# Function to display folder contents
 def tampilkan_isi_folder(path):
     items = list(path.iterdir())
     files = [item for item in items if item.is_file()]
@@ -90,7 +97,7 @@ def tampilkan_isi_folder(path):
             if st.button(f"📁 {folder.name}", key=f"folder_{folder.name}"):
                 st.experimental_set_query_params(path=str(folder.relative_to(BASE_DIR)))
         with col2:
-            menu_options = ["⚙", "Rename", "Delete"]
+            menu_options = ["⚙️", "Rename", "Delete"]
             action = st.selectbox("", menu_options, key=f"menu_folder_{folder.name}", label_visibility="collapsed")
             if action == "Rename":
                 new_name = st.text_input(f"Ubah nama folder '{folder.name}'", key=f"rename_folder_{folder.name}_input")
@@ -109,7 +116,7 @@ def tampilkan_isi_folder(path):
         with col1:
             st.write(f"📄 {file.name}")
         with col2:
-            menu_options = ["⚙", "Rename", "Delete", "Download", "Open"]
+            menu_options = ["⚙️", "Rename", "Delete", "Download", "Open"]
             action = st.selectbox("", menu_options, key=f"menu_file_{file.name}", label_visibility="collapsed")
             if action == "Rename":
                 new_name = st.text_input(f"Ubah nama file '{file.name}'", key=f"rename_{file.name}_input")
@@ -145,36 +152,46 @@ def tampilkan_isi_folder(path):
                 else:
                     st.warning("File type not supported for direct viewing.")
 
-# Aplikasi Streamlit
-st.title("LDK YARSI Storage")
+# Main application
+if menu == "Beranda":
+    st.title("LDK YARSI Storage")
 
-# Membaca query parameter untuk navigasi folder
-query_params = st.experimental_get_query_params()
-current_path_str = query_params.get("path", [""])[0]
-current_path = BASE_DIR / current_path_str
+    # Read query parameter for folder navigation
+    query_params = st.experimental_get_query_params()
+    current_path_str = query_params.get("path", [""])[0]
+    current_path = BASE_DIR / current_path_str
 
-# Menampilkan total ukuran penyimpanan yang terpakai
-total_storage_used = hitung_total_ukuran(BASE_DIR)
-st.write(f"Total penyimpanan yang terpakai: {total_storage_used / (1024 * 1024):.2f} MB")
+    # Display total storage used
+    total_storage_used = hitung_total_ukuran(BASE_DIR)
+    st.write(f"Total penyimpanan yang terpakai: {total_storage_used / (1024 * 1024):.2f} MB")
 
-# Membuat folder baru
-st.header("Buat Folder")
-folder_name = st.text_input("Nama Folder")
-if st.button("Buat Folder"):
-    if folder_name:
-        buat_folder(current_path / folder_name)
-        st.success(f"Folder '{folder_name}' berhasil dibuat.")
-    else:
-        st.error("Nama folder tidak boleh kosong")
+    # Create new folder
+    st.header("Buat Folder")
+    folder_name = st.text_input("Nama Folder")
+    if st.button("Buat Folder"):
+        if folder_name:
+            buat_folder(current_path / folder_name)
+            st.success(f"Folder '{folder_name}' berhasil dibuat.")
+        else:
+            st.error("Nama folder tidak boleh kosong")
 
-# Mengunggah file baru
-st.header("Unggah File")
-uploaded_file = st.file_uploader("Pilih File")
-if uploaded_file and st.button("Unggah File"):
-    if uploaded_file.size <= 1 * 1024 * 1024 * 1024:  # Check if file size is less than or equal to 1GB
-        tambah_dokumen(current_path_str, uploaded_file)
-    else:
-        st.error("Ukuran file tidak boleh lebih dari 1GB")
+    # Upload new file
+    st.header("Unggah File")
+    uploaded_file = st.file_uploader("Pilih File (Limit 1GB)")
+    if uploaded_file and st.button("Unggah File"):
+        if uploaded_file.size <= 1 * 1024 * 1024 * 1024:  # Check if file size is less than or equal to 1GB
+            tambah_dokumen(current_path_str, uploaded_file)
+        else:
+            st.error("Ukuran file tidak boleh lebih dari 1GB")
 
-# Tampilkan isi folder saat ini
-tampilkan_isi_folder(current_path)
+    # Display current folder contents
+    tampilkan_isi_folder(current_path)
+
+elif menu == "Pengaturan":
+    st.title("Pengaturan")
+    st.write("Di sini Anda bisa menyesuaikan pengaturan aplikasi.")
+
+elif menu == "Tentang Kami":
+    st.title("Tentang Kami")
+    st.write("Ini adalah aplikasi penyimpanan file LDK YARSI. Dikembangkan oleh tim IT LDK YARSI.")
+
