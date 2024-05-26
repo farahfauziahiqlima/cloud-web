@@ -2,6 +2,12 @@ import streamlit as st
 import os
 from pathlib import Path
 import shutil
+from streamlit_option_menu import option_menu
+
+with st.sidebar:
+    selected = option_menu("Main Menu", ["Beranda", 'Settings'], 
+        icons=['house', 'gear'], menu_icon="cast", default_index=1)
+    selected
 
 # Set Streamlit page configuration
 st.set_page_config(
@@ -90,7 +96,7 @@ def tampilkan_isi_folder(path):
             if st.button(f"📁 {folder.name}", key=f"folder_{folder.name}"):
                 st.experimental_set_query_params(path=str(folder.relative_to(BASE_DIR)))
         with col2:
-            menu_options = ["⚙️", "Rename", "Delete"]
+            menu_options = ["⚙", "Rename", "Delete"]
             action = st.selectbox("", menu_options, key=f"menu_folder_{folder.name}", label_visibility="collapsed")
             if action == "Rename":
                 new_name = st.text_input(f"Ubah nama folder '{folder.name}'", key=f"rename_folder_{folder.name}_input")
@@ -109,7 +115,7 @@ def tampilkan_isi_folder(path):
         with col1:
             st.write(f"📄 {file.name}")
         with col2:
-            menu_options = ["⚙️", "Rename", "Delete", "Download", "Open"]
+            menu_options = ["⚙", "Rename", "Delete", "Download", "Open"]
             action = st.selectbox("", menu_options, key=f"menu_file_{file.name}", label_visibility="collapsed")
             if action == "Rename":
                 new_name = st.text_input(f"Ubah nama file '{file.name}'", key=f"rename_{file.name}_input")
