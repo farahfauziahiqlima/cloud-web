@@ -2,12 +2,6 @@ import streamlit as st
 import os
 from pathlib import Path
 import shutil
-from streamlit_option_menu import option_menu
-
-with st.sidebar:
-    selected = option_menu("Main Menu", ["Beranda", 'Settings'], 
-        icons=['house', 'gear'], menu_icon="cast", default_index=1)
-    selected
 
 # Set Streamlit page configuration
 st.set_page_config(
