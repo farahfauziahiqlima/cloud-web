@@ -184,8 +184,13 @@ if menu == "Beranda":
         else:
             st.error("Ukuran file tidak boleh lebih dari 1GB")
 
+<<<<<<< HEAD
+# Tampilkan isi folder saatt ini
+tampilkan_isi_folder(current_path)
+=======
     # Display current folder contents
     tampilkan_isi_folder(current_path)
+>>>>>>> ce74bd5aa61286f0e3e342ae8c1417a48ef8dbb8
 
 elif menu == "Pengaturan":
     st.title("Pengaturan")
